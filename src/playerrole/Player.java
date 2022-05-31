@@ -4,17 +4,16 @@ import playerrole.cards.*;
 
 import java.util.ArrayList;
 
-
 public class Player {
+    static int totalNumberOfPlayers = 0;
     private ArrayList<BridgeCard> bridgeCards;
     private ArrayList<EquipmentCard> equipmentCards;
 
-    Player() {
+    public Player() {
         bridgeCards = new ArrayList<>();
         equipmentCards = new ArrayList<>();
+        totalNumberOfPlayers++;
     }
-
-
     private void addBridgeCard() {
         bridgeCards.add(new BridgeCard());
     }
@@ -24,5 +23,8 @@ public class Player {
     private void deleteBridgeCard() {
         if (!bridgeCards.isEmpty())
             bridgeCards.remove(bridgeCards.size()-1);
+    }
+    public static int getTotalNumberOfPlayers() {
+        return totalNumberOfPlayers;
     }
 }
