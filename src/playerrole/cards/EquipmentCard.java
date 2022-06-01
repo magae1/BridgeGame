@@ -1,18 +1,21 @@
 package playerrole.cards;
 
 public class EquipmentCard extends Card {
-    private String name;
-    private int score;
+    private final String NAME;
+    private final int SCORE;
 
     public EquipmentCard(String name, int score) {
         super();
-        this.name = name;
-        this.score= score;
+        NAME = name;
+        SCORE= score;
+    }
+    public EquipmentCard(EquipmentCardIndex e) {
+        this(e.getName(), e.getScore());
     }
     int getScore() {
-        return score;
+        return SCORE;
     }
     String getName() {
-        return name;
+        return NAME;
     }
 }

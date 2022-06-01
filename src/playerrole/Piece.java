@@ -7,14 +7,3 @@ public class Piece {
     }
 
 }
-
-class Position {
-    private int xpos;
-    private int ypos;
-    Position(int xpos, int ypos) {
-        this.xpos = xpos;
-        this.ypos = ypos;
-    }
-
-
-}
