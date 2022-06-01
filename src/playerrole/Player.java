@@ -14,10 +14,10 @@ public class Player {
         equipmentCards = new ArrayList<>();
         totalNumberOfPlayers++;
     }
-    private void addBridgeCard() {
+    private void getNewBridgeCard() {
         bridgeCards.add(new BridgeCard());
     }
-    private void addEquipmentCard(EquipmentCardIndex e) {
+    private void getNewEquipmentCard(EquipmentCardIndex e) {
         equipmentCards.add(new EquipmentCard(e.getName(), e.getScore()));
     }
     private void deleteBridgeCard() {
