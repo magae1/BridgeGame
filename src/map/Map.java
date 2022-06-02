@@ -77,6 +77,7 @@ public class Map {
         }
     }
     private List<Cell> cellList;
+    private HashMap<Cell, Cell> bridgeMap;
     private int highestXpos = 0;
     private int highestYpos = 0;
     private int lowestXpos = 0;
@@ -84,6 +85,7 @@ public class Map {
 
     public Map() {
         cellList = new ArrayList<>();
+        bridgeMap = new HashMap<>();
     }
 
     public void createMap(String mapName) {
@@ -106,6 +108,8 @@ public class Map {
     public void printMap() {
 
     }
+
+
     private void calcHighestLowestPositions(Cell cell) {
         highestXpos = Math.max(cell.getPOSITION().getXpos(), highestXpos);
         lowestXpos = Math.min(cell.getPOSITION().getXpos(), lowestXpos);

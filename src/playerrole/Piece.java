@@ -8,12 +8,12 @@ public class Piece {
         currentCell = cell;
     }
 
-    void move(Cell cell) {
-        currentCell = cell;
+    void move() {
+
     }
 
 
-    void occurEvent(Cell cell) {
+    void occurEventByCellType(Cell cell) {
 
     }
 

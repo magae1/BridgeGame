@@ -22,8 +22,7 @@ public class Player {
 
         int movementsCount = currentEyes - bridgeCards.size();
         if (movementsCount <= 0) {
-            System.out.println("You can't move. End your Turn");
-            return;
+            System.out.print("You can't move.");
         }
 
         String moveward = "";

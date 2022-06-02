@@ -39,7 +39,22 @@ public class Cell {
     private Cell() {
         this(null, null);
     }
-
+    public boolean moveNextDirection(CellDirection cellDirection) {
+        try{
+            return (DIRECTIONS.get(DIRECTIONS.size() - 1) == cellDirection) && (CELL_TYPE != CellTypes.END);
+        } catch(IndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+    public boolean movePreDirection(CellDirection cellDirection) {
+        try {
+            return (DIRECTIONS.get(1) == cellDirection) && (CELL_TYPE != CellTypes.START);
+        } catch (IndexOutOfBoundsException e ) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
     public CellTypes getCELL_TYPE() {
         return CELL_TYPE;
     }
