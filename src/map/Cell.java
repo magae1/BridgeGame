@@ -39,7 +39,7 @@ public class Cell {
     private Cell() {
         this(null, null);
     }
-    public boolean moveNextDirection(CellDirection cellDirection) {
+    public boolean isNextDirection(CellDirection cellDirection) {
         try{
             return (DIRECTIONS.get(DIRECTIONS.size() - 1) == cellDirection) && (CELL_TYPE != CellTypes.END);
         } catch(IndexOutOfBoundsException e) {
@@ -47,7 +47,7 @@ public class Cell {
             return false;
         }
     }
-    public boolean movePreDirection(CellDirection cellDirection) {
+    public boolean isPreDirection(CellDirection cellDirection) {
         try {
             return (DIRECTIONS.get(1) == cellDirection) && (CELL_TYPE != CellTypes.START);
         } catch (IndexOutOfBoundsException e ) {

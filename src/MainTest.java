@@ -1,5 +1,4 @@
 import map.Map;
-import playerrole.Dice;
 import playerrole.Player;
 
 public class MainTest {
@@ -9,8 +8,7 @@ public class MainTest {
         Map map = new Map();
         Player player = new Player();
         map.createMap(MAP_1);
-        map.printMap();
-
-        player.playOneTurn();
+        map.printBridges();
+        //player.playOneTurn();
     }
 }

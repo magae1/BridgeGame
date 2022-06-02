@@ -7,7 +7,6 @@ public class Piece {
     Piece(Cell cell) {
         currentCell = cell;
     }
-
     void move() {
 
     }
