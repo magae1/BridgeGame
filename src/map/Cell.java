@@ -1,7 +1,7 @@
 package map;
 
+
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class Cell {
     private final CellTypes CELL_TYPE;
@@ -15,9 +15,9 @@ public class Cell {
     public Cell(CellTypes cellType, ArrayList<CellDirection> directionArrayList) {
         CELL_TYPE = cellType;
         DIRECTIONS = directionArrayList;
-        CELL_INDEX = ++countCells;
+        CELL_INDEX = countCells++;
         POSITION = new Position(XPosition, YPosition);
-        System.out.println(toString(this));
+        System.out.println(this.toString());
         try {
             switch(directionArrayList.get(directionArrayList.size()-1)) {
                 case UP ->
@@ -55,10 +55,10 @@ public class Cell {
     }
     public static void setXPosition(int xposition) { Cell.XPosition = xposition; }
     public static void setYPosition(int yposition) { Cell.YPosition = yposition; }
-    public String toString(Cell cell) {
-        return String.format("Index:%3d, Type:%2c, Position:%s", cell.getCELL_INDEX(), cell.CELL_TYPE.getType(), cell.POSITION.toString());
+    public static String toString(Cell cell) {
+        return String.format("Index:%-3d, Type:%-14s, Direction:%-13s, Position:%s", cell.getCELL_INDEX(), cell.CELL_TYPE.toString(), cell.DIRECTIONS.toString(), cell.POSITION.toString());
     }
     public String toString() {
-        return String.format("Index:%3d, Type:%2c, Position:%s", this.getCELL_INDEX(), this.CELL_TYPE.getType(), this.POSITION.toString());
+        return String.format("Index:%-3d, Type:%-14s, Direction:%-13s, Position:%s", this.getCELL_INDEX(), this.CELL_TYPE.toString(), this.DIRECTIONS.toString(), this.POSITION.toString());
     }
 }

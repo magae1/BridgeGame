@@ -58,7 +58,8 @@ public class Map {
                 else
                     directions.add(getCellDirectionByCharacter(line.charAt(i)));
             }
-            addAnElementInCellHashMap(new Cell(cellTypes, directions));
+            directions.trimToSize();
+            addAnElementInCellList(new Cell(cellTypes, directions));
         }
         private CellTypes getCellTypeByCharacter(char c) {
             for (CellTypes e : CellTypes.values()) {
@@ -75,14 +76,14 @@ public class Map {
             return null;
         }
     }
-    private HashMap<Integer, Cell> cellHashMap;
+    private List<Cell> cellList;
     private int highestXpos = 0;
     private int highestYpos = 0;
     private int lowestXpos = 0;
     private int lowestYpos = 0;
 
     public Map() {
-        cellHashMap = new HashMap<>();
+        cellList = new ArrayList<>();
     }
 
     public void createMap(String mapName) {
@@ -98,11 +99,10 @@ public class Map {
         highestYpos = 0;
         lowestXpos = 0;
         lowestYpos = 0;
-        if (!cellHashMap.isEmpty())
-            cellHashMap.clear();
+        if (!cellList.isEmpty())
+            cellList.clear();
     }
-    public HashMap<Integer, Cell> getCellHashMap() { return cellHashMap; }
-
+    public List<Cell> getCellList() { return cellList; }
     public void printMap() {
 
     }
@@ -112,9 +112,9 @@ public class Map {
         highestYpos = Math.max(cell.getPOSITION().getYpos(), highestYpos);
         lowestYpos = Math.min(cell.getPOSITION().getYpos(), lowestYpos);
     }
-    private void addAnElementInCellHashMap(Cell cell) {
+    private void addAnElementInCellList(Cell cell) {
         calcHighestLowestPositions(cell);
-        cellHashMap.put(cell.getCELL_INDEX(), cell);
+        cellList.add(cell);
     }
 }
 

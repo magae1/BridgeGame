@@ -1,8 +1,19 @@
 package playerrole;
 
-public class Piece {
+import map.Cell;
 
-    Piece() {
+public class Piece {
+    private Cell currentCell;
+    Piece(Cell cell) {
+        currentCell = cell;
+    }
+
+    void move(Cell cell) {
+        currentCell = cell;
+    }
+
+
+    void occurEvent(Cell cell) {
 
     }
 

@@ -12,7 +12,7 @@ public class EquipmentCard extends Card {
     public EquipmentCard(EquipmentCardIndex e) {
         this(e.getName(), e.getScore());
     }
-    int getScore() {
+    public int getScore() {
         return SCORE;
     }
     String getName() {

@@ -22,7 +22,4 @@ public class Position {
     public static String toString(Position position) {
         return String.format("[%2d,%2d]", position.getXpos(), position.getYpos());
     }
-    public boolean isEqual(int x, int y) {
-        return (this.Xpos == x && this.Ypos == y);
-    }
 }
