@@ -1,9 +1,10 @@
 package map;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import map.cells.Cell;
+import map.cells.CellDirection;
+import map.cells.CellTypes;
+
+import java.io.*;
 import java.util.*;
 
 public class Map {
@@ -20,31 +21,31 @@ public class Map {
         private void streamMapData() {
             File mapFile = new File(MAP_DATA_DIRECTORY + mapName + ".map");
             if (!mapFile.exists() || mapFile.isDirectory()) {
-                System.out.println("Wrong file name.");
+                printer.println("Wrong file name.");
                 return;
             }
-            System.out.println(mapName + ".map is found.");
+            printer.println(mapName + ".map is found.");
             try {
                 fileReader = new FileReader(mapFile);
                 bufferedReader = new BufferedReader(fileReader);
-                System.out.println(bufferedReader.toString() + " opened.");
+                printer.println(bufferedReader.toString() + " opened.");
 
                 String line;
                 int lineNum = 0;
                 while((line = bufferedReader.readLine()) != null) {
-                    //System.out.printf("%d : %s - %d\n", ++lineNum, line, line.length());
+                    //printer.printf("%d : %s - %d\n", ++lineNum, line, line.length());
                     createACellByOneLine(line);
                 }
             } catch (IOException e) {
-                System.out.println("Wrong file reading.");
+                printer.println("Wrong file reading.");
             } finally {
                 try {
                     if (bufferedReader != null) {
                         bufferedReader.close();
-                        System.out.println(bufferedReader.toString() + " closed.");
+                        printer.println(bufferedReader.toString() + " closed.");
                     }
                 } catch (IOException e) {
-                    System.out.println(bufferedReader.toString() +" isn't closed.");
+                    printer.println(bufferedReader.toString() +" isn't closed.");
                 }
             }
         }
@@ -59,17 +60,21 @@ public class Map {
                     directions.add(getCellDirectionByCharacter(line.charAt(i)));
             }
             directions.trimToSize();
-            addAnElementInCellList(new Cell(cellTypes, directions));
+            Cell cell = new Cell(cellTypes, directions);
+            printer.println(cell);
+            addAnElementInCellList(cell);
         }
     }
     private List<Cell> cellList;
+    private PrintStream printer;
     private HashMap<Cell, Cell> bridgeMap;
     private int highestXpos = 0;
     private int highestYpos = 0;
     private int lowestXpos = 0;
     private int lowestYpos = 0;
 
-    public Map() {
+    public Map(PrintStream printer) {
+        this.printer = printer;
         cellList = new ArrayList<>();
         bridgeMap = new HashMap<>();
     }
@@ -93,37 +98,50 @@ public class Map {
     public void printMap() {
 
     }
-    public void printBridges() {
-        Iterator iterator = bridgeMap.entrySet().iterator();
-        while(iterator.hasNext()) {
-            java.util.Map.Entry<Cell, Cell> bridge = (java.util.Map.Entry<Cell, Cell>) iterator.next();
-            System.out.println(bridge.toString());
-        }
+    public void printBridgesInfo() {
+        for (java.util.Map.Entry<Cell, Cell> bridge : bridgeMap.entrySet())
+            printer.println(bridge.toString());
     }
     public boolean movementCheck(Cell cell, String movements) {
-
         for (int i = 0; i < movements.length(); i++) {
             CellDirection cellDirection = getCellDirectionByCharacter(movements.charAt(i));
+            int cellIndex = cell != null ? cell.getCELL_INDEX() : 0;
+            printer.println(cellDirection);
             if (cell.isNextDirection(cellDirection)) {
-
+                cell = getForwardCell(cellIndex);
+                continue;
             }
-            else if (cell.isPreDirection(cellDirection)) {
-
+            if (cell.isPreDirection(cellDirection)) {
+                cell = getBackwardCell(cellIndex);
+                continue;
             }
-            else
-                return false;
+            printer.println("You can't move this way.");
+            return false;
         }
-        return false;
+        return true;
     }
+    public void occurEventByCellType(Cell cell) {
 
-
+    }
+    private Cell getForwardCell(int i) {
+        try {
+            return cellList.get(i + 1);
+        } catch (IndexOutOfBoundsException ignored) {}
+        return null;
+    }
+    private Cell getBackwardCell(int i) {
+        try {
+            return cellList.get(i - 1);
+        } catch (IndexOutOfBoundsException ignored) {}
+        return null;
+    }
     private void buildBridges() {
-        System.out.println("Build bridges...");
+        printer.println("Build bridges...");
         List<Cell> tempStartCellsList = new LinkedList<>();
         List<Cell> tempEndCellsList = new LinkedList<>();
         for (Cell cell : cellList) {
             if (isBridgeStartCell(cell)) tempStartCellsList.add(cell);
-            else if (isBridgeEndCell(cell)) tempEndCellsList.add(cell);
+            if (isBridgeEndCell(cell)) tempEndCellsList.add(cell);
         }
         buildBridgeByStartCellsAndEndCells(tempStartCellsList, tempEndCellsList);
     }
@@ -159,17 +177,20 @@ public class Map {
     }
     private CellTypes getCellTypeByCharacter(char c) {
         for (CellTypes e : CellTypes.values()) {
-            if (e.getType() == c)
+            if (e.getaChar() == c)
                 return e;
         }
         return null;
     }
     private CellDirection getCellDirectionByCharacter(char c) {
         for (CellDirection e : CellDirection.values()) {
-            if (e.getDirection() == c)
+            if (e.getaChar() == c)
                 return e;
         }
         return null;
+    }
+    public List<Cell> getCellList() {
+        return cellList;
     }
 }
 

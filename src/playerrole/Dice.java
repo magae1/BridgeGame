@@ -1,5 +1,6 @@
 package playerrole;
 
+import java.io.PrintStream;
 import java.util.Random;
 
 public class Dice {
@@ -8,7 +9,12 @@ public class Dice {
     public Dice() {
     }
     public static int roll() {
-        System.out.printf("Dice roll...[MIN:%d, MAX:%d]\n", MIN_NUM_OF_EYE, MAX_NUM_OF_EYE);
         return new Random().ints(1, MIN_NUM_OF_EYE,MAX_NUM_OF_EYE+1).findFirst().getAsInt();
+    }
+    public static int getMaxNumOfEye() {
+        return MAX_NUM_OF_EYE;
+    }
+    public static int getMinNumOfEye() {
+        return MIN_NUM_OF_EYE;
     }
 }

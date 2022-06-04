@@ -6,7 +6,7 @@ public class Position {
         this.Xpos = Xpos;
         this.Ypos = Ypos;
     }
-    Position() {
+    private Position() {
         this(0,0);
     }
 
@@ -18,8 +18,5 @@ public class Position {
     }
     public String toString() {
         return String.format("[%2d,%2d]", this.getXpos(), this.getYpos());
-    }
-    public static String toString(Position position) {
-        return String.format("[%2d,%2d]", position.getXpos(), position.getYpos());
     }
 }

@@ -1,5 +1,6 @@
-package map;
+package map.cells;
 
+import map.Position;
 
 import java.util.ArrayList;
 
@@ -17,7 +18,6 @@ public class Cell {
         DIRECTIONS = directionArrayList;
         CELL_INDEX = countCells++;
         POSITION = new Position(XPosition, YPosition);
-        System.out.println(this.toString());
         try {
             switch(directionArrayList.get(directionArrayList.size()-1)) {
                 case UP ->
@@ -43,15 +43,13 @@ public class Cell {
         try{
             return (DIRECTIONS.get(DIRECTIONS.size() - 1) == cellDirection) && (CELL_TYPE != CellTypes.END);
         } catch(IndexOutOfBoundsException e) {
-            System.out.println(e.getMessage());
             return false;
         }
     }
     public boolean isPreDirection(CellDirection cellDirection) {
         try {
             return (DIRECTIONS.get(1) == cellDirection) && (CELL_TYPE != CellTypes.START);
-        } catch (IndexOutOfBoundsException e ) {
-            System.out.println(e.getMessage());
+        } catch (IndexOutOfBoundsException e) {
             return false;
         }
     }
@@ -70,9 +68,6 @@ public class Cell {
     }
     public static void setXPosition(int xposition) { Cell.XPosition = xposition; }
     public static void setYPosition(int yposition) { Cell.YPosition = yposition; }
-    public static String toString(Cell cell) {
-        return String.format("Index:%-3d, Type:%-14s, Direction:%-13s, Position:%s", cell.getCELL_INDEX(), cell.CELL_TYPE.toString(), cell.DIRECTIONS.toString(), cell.POSITION.toString());
-    }
     public String toString() {
         return String.format("Index:%-3d, Type:%-14s, Direction:%-13s, Position:%s", this.getCELL_INDEX(), this.CELL_TYPE.toString(), this.DIRECTIONS.toString(), this.POSITION.toString());
     }
