@@ -1,8 +1,11 @@
 package map.cells;
 
 import map.Position;
+import playerrole.Piece;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Cell {
     private final CellTypes CELL_TYPE;
@@ -12,11 +15,13 @@ public class Cell {
     private static int YPosition = 0;
     private static int countCells = 0;
     private final Position POSITION;
+    private Set<Piece> pieceSet;
 
     public Cell(CellTypes cellType, ArrayList<CellDirection> directionArrayList) {
         CELL_TYPE = cellType;
         DIRECTIONS = directionArrayList;
         CELL_INDEX = countCells++;
+        pieceSet = new HashSet<>(1);
         POSITION = new Position(XPosition, YPosition);
         try {
             switch(directionArrayList.get(directionArrayList.size()-1)) {
@@ -53,6 +58,12 @@ public class Cell {
             return false;
         }
     }
+    public void deletePiece(Piece piece) {
+        pieceSet.remove(piece);
+    }
+    public void addPiece(Piece piece) {
+        pieceSet.add(piece);
+    }
     public CellTypes getCELL_TYPE() {
         return CELL_TYPE;
     }
@@ -63,6 +74,7 @@ public class Cell {
     public Position getPOSITION() {
         return POSITION;
     }
+    public Set<Piece> getPieceSet() { return pieceSet; }
     public static void setCountCells(int countCells) {
         Cell.countCells = countCells;
     }

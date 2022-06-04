@@ -7,7 +7,7 @@ import map.cells.CellTypes;
 import java.io.*;
 import java.util.*;
 
-public class Map {
+public class Board {
     private class MapBuilder {
         private final String MAP_DATA_DIRECTORY = "./map data/";
         private String mapName;
@@ -73,7 +73,7 @@ public class Map {
     private int lowestXpos = 0;
     private int lowestYpos = 0;
 
-    public Map(PrintStream printer) {
+    public Board(PrintStream printer) {
         this.printer = printer;
         cellList = new ArrayList<>();
         bridgeMap = new HashMap<>();
@@ -119,9 +119,6 @@ public class Map {
             return false;
         }
         return true;
-    }
-    public void occurEventByCellType(Cell cell) {
-
     }
     private Cell getForwardCell(int i) {
         try {

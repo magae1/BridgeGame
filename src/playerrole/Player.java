@@ -1,6 +1,6 @@
 package playerrole;
 
-import map.Map;
+import map.Board;
 import playerrole.cards.*;
 
 import java.io.PrintStream;
@@ -11,16 +11,14 @@ public class Player {
     static int totalNumberOfPlayers = 0;
     private final int indexOfPlayer;
     private ArrayList<BridgeCard> bridgeCards;
-    private Map map;
     private ArrayList<EquipmentCard> equipmentCards;
     private Piece piece;
     private Scanner scanner;
     private PrintStream printer;
     private int currentScore = 0;
-    public Player(Map map, PrintStream printer) {
-        this.map = map;
+    public Player(Board board, PrintStream printer) {
         this.printer = printer;
-        piece = new Piece(map, printer);
+        piece = new Piece(board, this, printer);
         bridgeCards = new ArrayList<>(3);
         equipmentCards = new ArrayList<>(3);
         scanner = new Scanner(System.in);
@@ -32,6 +30,7 @@ public class Player {
         for (String input = ""; ;) {
             printer.print("Stay[S] or Roll[R]. if stay, can discard one bridge card...>");
             input = scanner.nextLine();
+            input = input.toUpperCase();
             if (input.equals("S")) {
                 stayTurn();
                 break;
@@ -46,33 +45,36 @@ public class Player {
     }
     private void stayTurn() {
         deleteBridgeCard();
-        printer.println();
+        printer.printf("Discard one bridge card. You have %d bridge card(s).\n", bridgeCards.size());
     }
     private void rollTurn() {
         printer.printf("Dice roll[MIN:%d, MAX:%d]...", Dice.getMinNumOfEye(), Dice.getMaxNumOfEye());
         int currentEyes = Dice.roll();
         printer.printf("You got \"%d\".\n", currentEyes);
-        if (currentEyes - bridgeCards.size() > 0) {
+
+        int movementsCount = currentEyes - bridgeCards.size();
+        printer.printf("You can move %d time(s).\n", movementsCount);
+        if (movementsCount > 0) {
             while (currentEyes <= bridgeCards.size()) {
 
             }
         }
     }
 
-    private void inputLoop() {
+    private void inputLoopOnRoll() {
         String input;
         printer.print("Decide movemets..>");
         input = scanner.nextLine();
         printer.println("What you just input: " + input);
 
     }
-    private boolean checkInputIllegal(String input) {
-        return false;
+    protected void endBoardGame() {
+
     }
-    private void getNewBridgeCard() {
+    void getNewBridgeCard() {
         bridgeCards.add(new BridgeCard());
     }
-    private void getNewEquipmentCard(EquipmentCardIndex e) {
+    protected void getNewEquipmentCard(EquipmentCardIndex e) {
         equipmentCards.add(new EquipmentCard(e.getName(), e.getScore()));
     }
     private void calcCurrentScoreByEquipmentCards() {
@@ -85,7 +87,7 @@ public class Player {
             bridgeCards.remove(bridgeCards.size()-1);
     }
     public String toString() {
-        return String.format("P%-2d - bridge cards:%2d, equipment cards:%2d", indexOfPlayer, bridgeCards.size(), equipmentCards.size());
+        return String.format("P%-2d: bridge cards:%2d, equipment cards:%2d\n%s", indexOfPlayer, bridgeCards.size(), equipmentCards.size(), piece);
     }
     public static int getTotalNumberOfPlayers() {
         return totalNumberOfPlayers;

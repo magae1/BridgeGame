@@ -1,6 +1,5 @@
 package playerrole;
 
-import java.io.PrintStream;
 import java.util.Random;
 
 public class Dice {

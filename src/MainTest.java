@@ -1,4 +1,4 @@
-import map.Map;
+import map.Board;
 import playerrole.Player;
 
 import java.io.PrintStream;
@@ -8,10 +8,14 @@ public class MainTest {
     private static final String MAP_1 = "default";
     private static final String MAP_2 = "another";
     public static void main(String[] args) {
-        Map map = new Map(printer);
-        map.createMap(MAP_1);
-        map.printBridgesInfo();
-        Player player = new Player(map, printer);
-        player.playOneTurn();
+        Board board = new Board(printer);
+        board.createMap(MAP_1);
+        board.printBridgesInfo();
+        Player[] players = new Player[2];
+        for (int i = 0; i < 2; i++) {
+             players[i] = new Player(board, printer);
+        }
+        for (Player player : players)
+            player.playOneTurn();
     }
 }
