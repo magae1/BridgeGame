@@ -1,43 +1,42 @@
 package playerrole;
 
-import map.cells.Cell;
-import map.Board;
+import playerrole.cells.Cell;
+import playerrole.cells.CellTypes;
 import playerrole.cards.EquipmentCardIndex;
-
-import java.io.PrintStream;
 
 public class Piece {
     private Cell currentCell;
     private Board board;
     private Player player;
-    private PrintStream printer;
-    Piece(Board board, Player player, PrintStream printer) {
+    protected Piece(Board board, Player player) {
         currentCell = null;
-        this.printer = printer;
         this.board = board;
         this.player = player;
         putOnStartCell();
     }
-    boolean checkMovement(String movements) {
+    protected boolean checkMovement(String movements) {
         return board.movementCheck(currentCell, movements);
     }
-    private void putOnStartCell() {
-        try{
-            currentCell = board.getCellList().get(0);
-            currentCell.addPiece(this);
-        } catch (IndexOutOfBoundsException e) {
-            printer.println("Map isn't created.");
-            e.printStackTrace();
-        }
-    }
-    private void arrive() {
-        currentCell.addPiece(this);
+    protected void move(String movements) {
+        for (int i = 0; i < movements.length(); i++)
+            moveOneStep(movements.charAt(i));
         occurEventByCellType();
-
     }
-    private void move() {
-        currentCell.deletePiece(this);
+    protected void crossBridge() {
+        currentCell = board.getBridgeMap().get(currentCell);
+        player.getNewBridgeCard();
+    }
 
+    protected boolean isPieceOnBridgeCell() {
+        return currentCell.getCELL_TYPE() == CellTypes.BRIDGE_START;
+    }
+    private void moveOneStep(char step){
+        currentCell.deletePiece(this);
+        if (currentCell.isNextDirection(step))
+            currentCell = board.getForwardCell(currentCell.getCELL_INDEX());
+        else if(currentCell.isPreDirection(step))
+            currentCell = board.getBackwardCell(currentCell.getCELL_INDEX());
+        currentCell.addPiece(this);
     }
     private void occurEventByCellType() {
         switch (currentCell.getCELL_TYPE()) {
@@ -55,7 +54,15 @@ public class Piece {
             }
         }
     }
+    private void putOnStartCell() {
+        try{
+            currentCell = board.getCellList().get(0);
+            currentCell.addPiece(this);
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
     public String toString() {
-        return String.format("This Piece is on a cell..Info: %s", currentCell);
+        return String.format("Your Piece is on a..%s", currentCell);
     }
 }

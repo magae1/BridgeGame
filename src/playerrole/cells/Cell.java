@@ -1,6 +1,6 @@
-package map.cells;
+package playerrole.cells;
 
-import map.Position;
+import playerrole.Position;
 import playerrole.Piece;
 
 import java.util.ArrayList;
@@ -26,17 +26,15 @@ public class Cell {
         try {
             switch(directionArrayList.get(directionArrayList.size()-1)) {
                 case UP ->
-                    YPosition++;
-                case DOWN ->
                     YPosition--;
+                case DOWN ->
+                    YPosition++;
                 case LEFT ->
                     XPosition--;
                 case RIGHT ->
                     XPosition++;
             }
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("END OF MAP");
-        }
+        } catch (IndexOutOfBoundsException ignored) {}
     }
     public Cell(CellTypes cellType) {
         this(cellType, null);
@@ -44,16 +42,16 @@ public class Cell {
     private Cell() {
         this(null, null);
     }
-    public boolean isNextDirection(CellDirection cellDirection) {
+    public boolean isNextDirection(char cellDirection) {
         try{
-            return (DIRECTIONS.get(DIRECTIONS.size() - 1) == cellDirection) && (CELL_TYPE != CellTypes.END);
+            return (DIRECTIONS.get(DIRECTIONS.size() - 1).getaChar() == cellDirection) && (CELL_TYPE != CellTypes.END);
         } catch(IndexOutOfBoundsException e) {
             return false;
         }
     }
-    public boolean isPreDirection(CellDirection cellDirection) {
+    public boolean isPreDirection(char cellDirection) {
         try {
-            return (DIRECTIONS.get(1) == cellDirection) && (CELL_TYPE != CellTypes.START);
+            return (DIRECTIONS.get(0).getaChar() == cellDirection) && (CELL_TYPE != CellTypes.START);
         } catch (IndexOutOfBoundsException e) {
             return false;
         }

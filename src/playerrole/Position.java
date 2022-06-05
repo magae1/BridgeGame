@@ -1,4 +1,4 @@
-package map;
+package playerrole;
 public class Position {
     private final int Xpos;
     private final int Ypos;

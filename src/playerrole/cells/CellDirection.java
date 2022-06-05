@@ -1,4 +1,4 @@
-package map.cells;
+package playerrole.cells;
 
 public enum CellDirection {
     UP('U'), DOWN('D'), LEFT('L'), RIGHT('R')
