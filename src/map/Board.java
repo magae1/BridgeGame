@@ -104,19 +104,7 @@ public class Board {
     }
     public boolean movementCheck(Cell cell, String movements) {
         for (int i = 0; i < movements.length(); i++) {
-            CellDirection cellDirection = getCellDirectionByCharacter(movements.charAt(i));
-            int cellIndex = cell != null ? cell.getCELL_INDEX() : 0;
-            printer.println(cellDirection);
-            if (cell.isNextDirection(cellDirection)) {
-                cell = getForwardCell(cellIndex);
-                continue;
-            }
-            if (cell.isPreDirection(cellDirection)) {
-                cell = getBackwardCell(cellIndex);
-                continue;
-            }
-            printer.println("You can't move this way.");
-            return false;
+
         }
         return true;
     }

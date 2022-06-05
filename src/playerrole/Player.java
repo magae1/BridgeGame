@@ -55,18 +55,19 @@ public class Player {
         int movementsCount = currentEyes - bridgeCards.size();
         printer.printf("You can move %d time(s).\n", movementsCount);
         if (movementsCount > 0) {
-            while (currentEyes <= bridgeCards.size()) {
+            String moveWard;
+            while((moveWard = inputLoopOnRoll()) != "") {
 
             }
         }
     }
 
-    private void inputLoopOnRoll() {
+    private String inputLoopOnRoll() {
         String input;
         printer.print("Decide movemets..>");
         input = scanner.nextLine();
         printer.println("What you just input: " + input);
-
+        return input;
     }
     protected void endBoardGame() {
 
