@@ -1,4 +1,5 @@
 import graphic.Camera;
+import graphic.board.CellsRenderer;
 import graphic.rendertools.Shader;
 import graphic.models.BasicModel;
 import graphic.rendertools.Texture;
@@ -9,24 +10,31 @@ import java.io.PrintStream;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+
+import playerrole.Board;
+import playerrole.cells.CellDirection;
+import playerrole.cells.CellTypes;
 import windows.Timer;
 import windows.Window;
 
 public class MainTest {
-    private static PrintStream printer = new PrintStream(System.out);
-    public static void main(String[] args) {
+    //private static PrintStream printer = new PrintStream(System.out);
+    public MainTest() {
+        if (!glfwInit()) {
+            System.err.println("GLFW failed to initialize.");
+            System.exit(1);
+        }
         Window win = new Window();
         win.createWindow("Bridge-Board Game");
 
-        BasicModel basicmodel = new BasicModel();
-        Shader shader = new Shader("shader");
-        Texture texture = new Texture("End.png");
-        Camera camera = new Camera(640, 480);
-        Matrix4f projection = new Matrix4f()
-                .setOrtho2D(-640/2, 640/2, -480/2, 480/2);
-        Matrix4f scale = new Matrix4f().scale(32);
-        Matrix4f target = new Matrix4f();
 
+        Shader shader = new Shader("shader");
+        Camera camera = new Camera(win.getWidth(), win.getHeight());
+        Matrix4f projection = new Matrix4f()
+                .setOrtho2D(-win.getWidth()/2, win.getWidth()/2, -win.getHeight()/2, win.getHeight()/2);
+        Matrix4f scale = new Matrix4f().scale(16);
+        Matrix4f target = new Matrix4f();
+        CellsRenderer cellsRenderer = new CellsRenderer();
 
         camera.setPosition(new Vector3f(-100, 0, 0));
 
@@ -52,10 +60,14 @@ public class MainTest {
                 unprocessed -= frame_cap;
                 can_render = true;
                 target = scale;
-                if (glfwGetKey(win.getWindow(), GLFW_KEY_ESCAPE) == GLFW_TRUE) {
+
+                if (win.getKeyMouseHandler().isKeyPressed(GLFW_KEY_ESCAPE)) {
+                    System.out.println("True!");
                     glfwSetWindowShouldClose(win.getWindow(), true);
                 }
-                glfwPollEvents();
+
+                win.update();
+
                 if (frame_time >= 1.0) {
                     frame_time = 0;
                     System.out.printf("FPS: %d \n", frames);
@@ -66,29 +78,16 @@ public class MainTest {
             if (can_render) {
                 glClear(GL_COLOR_BUFFER_BIT);
 
-                shader.bind();
-                shader.setUniform("sampler", 0);
-                shader.setUniform("projection", camera.projection().mul(target));
-                basicmodel.render();
-                texture.bind(0);
+                for (int i = 0; i < 8; i++)
+                    cellsRenderer.renderCell((byte) 0, i,i, shader, scale, camera);
 
                 win.swapBuffer();
                 frames++;
             }
         }
-
         glfwTerminate();
-
-
-        /*
-        Board board = new Board(printer);
-        board.createMap();
-        Player player = new Player(board, printer);
-        while(player.isPlaying()) {
-            board.printBoard();
-            player.playOneTurn();
-        }
-         */
     }
-
+    public static void main(String[] args) {
+        new MainTest();
+    }
 }

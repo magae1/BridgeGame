@@ -30,7 +30,7 @@ public class Piece {
     protected boolean isPieceOnBridgeCell() {
         return currentCell.getCELL_TYPE() == CellTypes.BRIDGE_START;
     }
-    private void moveOneStep(char step){
+    protected void moveOneStep(char step){
         currentCell.deletePiece(this);
         if (currentCell.isNextDirection(step))
             currentCell = board.getForwardCell(currentCell.getCELL_INDEX());
@@ -38,7 +38,7 @@ public class Piece {
             currentCell = board.getBackwardCell(currentCell.getCELL_INDEX());
         currentCell.addPiece(this);
     }
-    private void occurEventByCellType() {
+    protected void occurEventByCellType() {
         switch (currentCell.getCELL_TYPE()) {
             case HAMMER -> {
                 player.getNewEquipmentCard(EquipmentCardIndex.H);
@@ -54,7 +54,7 @@ public class Piece {
             }
         }
     }
-    private void putOnStartCell() {
+    protected void putOnStartCell() {
         try{
             currentCell = board.getCellList().get(0);
             currentCell.addPiece(this);

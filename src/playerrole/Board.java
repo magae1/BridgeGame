@@ -8,8 +8,6 @@ import java.io.*;
 import java.util.*;
 
 public class Board {
-    private static final String MAP_1 = "default";
-    private static final String MAP_2 = "another";
     private class MapBuilder {
         private final String MAP_DATA_DIRECTORY = "./map data/";
         private String mapName;
@@ -87,7 +85,13 @@ public class Board {
         mapPrinter = null;
     }
     public void createMap() {
-        MapBuilder mapBuilder = new MapBuilder(MAP_1);
+        MapBuilder mapBuilder = new MapBuilder("default");
+        mapBuilder.streamMapData();
+        buildBridges();
+        mapPrinter = new MapPrinter(cellList, bridgeMap);
+    }
+    public void createMap(String mapName) {
+        MapBuilder mapBuilder = new MapBuilder(mapName);
         mapBuilder.streamMapData();
         buildBridges();
         mapPrinter = new MapPrinter(cellList, bridgeMap);

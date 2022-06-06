@@ -10,38 +10,29 @@ import java.nio.DoubleBuffer;
 
 public class KeyMouseHandler {
     private long window;
-    private boolean[] mousebuttons = new boolean[GLFW_MOUSE_BUTTON_LAST];
+    private boolean[] mouseButtons;
+    private boolean[] keys;
     public KeyMouseHandler(long window) {
         this.window = window;
+        mouseButtons = new boolean[GLFW_MOUSE_BUTTON_LAST];
+        keys = new boolean[GLFW_KEY_LAST];
     }
     private KeyMouseHandler() {
 
     }
-    public boolean isMouseDown ( int mouseButton){
-        return glfwGetMouseButton(window, mouseButton) == 1;
-    }
-    public boolean isMousePressed ( int mouseButton){
-        return isMouseDown(mouseButton) && !mousebuttons[mouseButton];
-    }
-    public boolean isMouseReleased ( int mouseButton){
-        return !isMouseDown(mouseButton) && mousebuttons[mouseButton];
-    }
-    public void eventsUpdater () {
+    public void update() {
+        for (int i = 0; i < GLFW_KEY_LAST; i++)
+            keys[i] = isKeyDown(i);
         for (int i = 0; i < GLFW_MOUSE_BUTTON_LAST; i++)
-            mousebuttons[i] = isMouseDown(i);
+            mouseButtons[i] = isMouseButtonDown(i);
     }
-    public double getMouseX () {
-        DoubleBuffer buffer = BufferUtils.createDoubleBuffer(1);
-        glfwGetCursorPos(window, buffer, null);
-        return buffer.get(0);
+    public boolean isKeyPressed(int key) {
+        return isKeyDown(key) && !keys[key];
     }
-    public double getMouseY () {
-        DoubleBuffer buffer = BufferUtils.createDoubleBuffer(1);
-        glfwGetCursorPos(window, null, buffer);
-        return buffer.get(0);
+    public boolean isMousePressed (int mouseButton) {
+        return isMouseButtonDown(mouseButton) && !mouseButtons[mouseButton];
     }
-
-    public double getMousePressedX(){
+    public double getMousePressedX() {
         if(isMousePressed(GLFW_MOUSE_BUTTON_LEFT)){
             return getMouseX();
         }
@@ -49,7 +40,6 @@ public class KeyMouseHandler {
             return 0;
         }
     }
-
     public double getMousePressedY(){
         if(isMousePressed(GLFW_MOUSE_BUTTON_LEFT) && !isMouseReleased(GLFW_MOUSE_BUTTON_LEFT)){
             return getMouseY();
@@ -57,5 +47,27 @@ public class KeyMouseHandler {
         else {
             return 0;
         }
+    }
+    private boolean isKeyDown(int key) {
+        return glfwGetKey(window, key) == 1;
+    }
+    private boolean isKeyReleased (int key) {
+        return !isKeyDown(key) && keys[key];
+    }
+    private boolean isMouseButtonDown(int mouseButton) {
+        return glfwGetMouseButton(window, mouseButton) == 1;
+    }
+    private boolean isMouseReleased(int mouseButton) {
+        return !isMouseButtonDown(mouseButton) && mouseButtons[mouseButton];
+    }
+    private double getMouseX() {
+        DoubleBuffer buffer = BufferUtils.createDoubleBuffer(1);
+        glfwGetCursorPos(window, buffer, null);
+        return buffer.get(0);
+    }
+    private double getMouseY() {
+        DoubleBuffer buffer = BufferUtils.createDoubleBuffer(1);
+        glfwGetCursorPos(window, null, buffer);
+        return buffer.get(0);
     }
 }
