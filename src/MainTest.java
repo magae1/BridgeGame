@@ -4,37 +4,20 @@ import graphic.models.BasicModel;
 import graphic.rendertools.Texture;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.lwjgl.glfw.GLFWVidMode;
 
 import java.io.PrintStream;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import org.lwjgl.opengl.GL;
 import windows.Timer;
+import windows.Window;
 
 public class MainTest {
     private static PrintStream printer = new PrintStream(System.out);
     public static void main(String[] args) {
-        if (!glfwInit())
-            throw new IllegalStateException("Error!!: GLFW.glfwinit() doesn't work.");
+        Window win = new Window();
+        win.createWindow("Bridge-Board Game");
 
-        long window = glfwCreateWindow(640, 480, "windowTitle", 0,0);
-
-        if (window == 0)
-            throw new IllegalStateException("Error!!: Window doesn't created.");
-
-        /*
-        GLFWVidMode videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        glfwSetWindowPos(window, (videoMode.width() - 640) / 2, (videoMode.height() - 480) / 2);
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-         */
-        glfwShowWindow(window);
-        glfwMakeContextCurrent(window);
-
-
-        GL.createCapabilities();
-        glEnable(GL_TEXTURE_2D);
         BasicModel basicmodel = new BasicModel();
         Shader shader = new Shader("shader");
         Texture texture = new Texture("End.png");
@@ -54,7 +37,7 @@ public class MainTest {
         double time = Timer.getTime();
         double unprocessed = 0;
 
-        while(!glfwWindowShouldClose(window)) {
+        while(!win.shouldClose()) {
             boolean can_render = false;
 
             double time_2 = Timer.getTime();
@@ -69,10 +52,10 @@ public class MainTest {
                 unprocessed -= frame_cap;
                 can_render = true;
                 target = scale;
-             //   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_TRUE) {
-               //     glfwSetWindowShouldClose(window, true);
-                //}
-                //glfwPollEvents();
+                if (glfwGetKey(win.getWindow(), GLFW_KEY_ESCAPE) == GLFW_TRUE) {
+                    glfwSetWindowShouldClose(win.getWindow(), true);
+                }
+                glfwPollEvents();
                 if (frame_time >= 1.0) {
                     frame_time = 0;
                     System.out.printf("FPS: %d \n", frames);
@@ -89,7 +72,7 @@ public class MainTest {
                 basicmodel.render();
                 texture.bind(0);
 
-                glfwSwapBuffers(window);
+                win.swapBuffer();
                 frames++;
             }
         }

@@ -4,10 +4,10 @@
  */
 package windows;
 
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
-
-import static org.lwjgl.glfw.GLFW.*;
+import org.lwjgl.opengl.GL11;
 
 public class Window {
     private long window;
@@ -21,27 +21,33 @@ public class Window {
     }
 
     public void createWindow(String windowTitle) throws IllegalStateException {
-        if (!glfwInit())
+        if (!GLFW.glfwInit())
             throw new IllegalStateException("Error!!: GLFW.glfwinit() doesn't work.");
 
-        window = glfwCreateWindow(width, height, windowTitle, 0,0);
+        GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
+        GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_TRUE);
+        window = GLFW.glfwCreateWindow(width, height, windowTitle, 0, 0);
 
         if (window == 0)
-            throw new IllegalStateException("Error!!: Window doesn't created.");
+            throw new IllegalStateException("Error!!: window doesn't created.");
 
-        GLFWVidMode videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        glfwSetWindowPos(window, (videoMode.width() - width) / 2, (videoMode.height() - height) / 2);
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        GLFW.glfwMakeContextCurrent(window);
+        GL.createCapabilities();
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        glfwShowWindow(window);
-        glfwMakeContextCurrent(window);
+        GLFWVidMode videoMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+        GLFW.glfwSetWindowPos(window, (videoMode.width() - width) / 2, (videoMode.height() - height) / 2);
+        GLFW.glfwShowWindow(window);
+        GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
     }
     public void swapBuffer() {
-        glfwSwapBuffers(window);
+        GLFW.glfwSwapBuffers(window);
     }
 
     public boolean shouldClose() {
-        return glfwWindowShouldClose(window);
+        return GLFW.glfwWindowShouldClose(window);
     }
     public void setSize(int width, int height){
         this.width = width;
