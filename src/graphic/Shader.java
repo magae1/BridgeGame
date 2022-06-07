@@ -2,7 +2,7 @@
  * Copyright LWJGL. All rights reserved.
  * License terms: https://www.lwjgl.org/license
  */
-package graphic.rendertools;
+package graphic;
 
 import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
@@ -77,7 +77,7 @@ public class Shader {
         BufferedReader br;
 
         try {
-            br = new BufferedReader(new FileReader(new File("src/graphic/rendertools/shaders/" + filename)));
+            br = new BufferedReader(new FileReader(new File("src/graphic/shaders/" + filename)));
             String line;
             while((line = br.readLine()) != null){
                    string.append(line);

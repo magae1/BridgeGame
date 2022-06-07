@@ -1,23 +1,18 @@
 import graphic.Camera;
-import graphic.board.CellsRenderer;
-import graphic.rendertools.Shader;
-import graphic.models.BasicModel;
-import graphic.rendertools.Texture;
+import graphic.Renderer;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-
-import java.io.PrintStream;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 import playerrole.Board;
-import playerrole.cells.CellDirection;
-import playerrole.cells.CellTypes;
 import windows.Timer;
 import windows.Window;
 
 public class MainTest {
+    private static final String MAP_1 = "default";
+    private static final String MAP_2 = "another";
     //private static PrintStream printer = new PrintStream(System.out);
     public MainTest() {
         if (!glfwInit()) {
@@ -27,14 +22,14 @@ public class MainTest {
         Window win = new Window();
         win.createWindow("Bridge-Board Game");
 
+        Board board = new Board();
+        board.createMap();
 
-        Shader shader = new Shader("shader");
         Camera camera = new Camera(win.getWidth(), win.getHeight());
-        Matrix4f projection = new Matrix4f()
-                .setOrtho2D(-win.getWidth()/2, win.getWidth()/2, -win.getHeight()/2, win.getHeight()/2);
-        Matrix4f scale = new Matrix4f().scale(16);
-        Matrix4f target = new Matrix4f();
-        CellsRenderer cellsRenderer = new CellsRenderer();
+        Matrix4f scale = new Matrix4f().scale(27);
+        Renderer renderer = new Renderer();
+        renderer.setCellList(board.getCellList());
+        renderer.setBridgeMap(board.getBridgeMap());
 
         camera.setPosition(new Vector3f(-100, 0, 0));
 
@@ -59,7 +54,6 @@ public class MainTest {
             while (unprocessed >= frame_cap) {
                 unprocessed -= frame_cap;
                 can_render = true;
-                target = scale;
 
                 if (win.getKeyMouseHandler().isKeyPressed(GLFW_KEY_ESCAPE)) {
                     System.out.println("True!");
@@ -78,8 +72,7 @@ public class MainTest {
             if (can_render) {
                 glClear(GL_COLOR_BUFFER_BIT);
 
-                for (int i = 0; i < 8; i++)
-                    cellsRenderer.renderCell((byte) 0, i,i, shader, scale, camera);
+                renderer.render(scale, camera);
 
                 win.swapBuffer();
                 frames++;

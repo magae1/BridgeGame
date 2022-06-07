@@ -1,17 +1,14 @@
 package playerrole;
 
-import playerrole.*;
-
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
-public class GameSystem {
-    private static final String MAP_1 = "default";
-    private static final String MAP_2 = "another";
+public class GameSystem extends Thread {
     private Board board;
-    private ArrayList<Player> players;
+    private List<Player> players;
     private HashMap<Integer, Player> billBoard;
     private PrintStream printer;
     private Scanner scanner;
@@ -23,15 +20,19 @@ public class GameSystem {
         players = null;
         billBoard = null;
     }
-    public void run() {
+    public void startGame() {
         board.createMap();
         int numOfPlayers;
-        for (;(numOfPlayers = scanner.nextInt()) > 4; ) {
-
-        }
+        do {
+            printer.print("Input a number of players..>");
+            numOfPlayers = scanner.nextInt();
+        } while((numOfPlayers < 2 || numOfPlayers > 4));
         players = new ArrayList<>(numOfPlayers);
         billBoard = new HashMap<>(numOfPlayers);
         setPlayers(numOfPlayers);
+    }
+    public void does() {
+
         while (!isGameEnd()) {
             for (Player player : players)
                 playOneTurn(player);
@@ -43,7 +44,7 @@ public class GameSystem {
     }
     private void playOneTurn(Player player) {
         printer.println(this);
-        for (String input = ""; ;) {
+        for (String input; ;) {
             printer.print("Stay[S] or Move[M]. if stay, can discard one bridge card..>");
             input = scanner.nextLine().toUpperCase();
             if (input.equals("S")) {
@@ -75,9 +76,10 @@ public class GameSystem {
                     player.getPiece().crossBridge();
                     return;
                 }
-                else if (answer.equals("N"))
+                else if (answer.equals("N")) {
                     printer.println("You choose No.");
-                break;
+                    break;
+                }
             }
         }
 
@@ -107,6 +109,14 @@ public class GameSystem {
     }
 
     void terminateAPlayer(Player player) {
+        int bonusScore = 0;
+        switch (billBoard.size()) {
+            case 0 -> bonusScore = 7;
+            case 1 -> bonusScore = 3;
+            case 2 -> bonusScore = 1;
+        }
+        int totalScore = player.getCurrentScore() + bonusScore;
+        billBoard.put(totalScore, player);
         players.remove(player);
     }
     boolean isGameEnd() {

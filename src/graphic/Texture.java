@@ -2,7 +2,7 @@
  * Copyright LWJGL. All rights reserved.
  * License terms: https://www.lwjgl.org/license
  */
-package graphic.rendertools;
+package graphic;
 
 import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.*;
@@ -19,7 +19,7 @@ public class Texture {
     private int width;
     private int height;
 
-    public Texture(String filename) {
+    public Texture(String filename) throws IOException {
         BufferedImage bi;
         try {
             bi = ImageIO.read(new File("imgfolder/"+filename));
@@ -46,7 +46,7 @@ public class Texture {
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
         } catch(IOException e) {
-            e.printStackTrace();
+            throw new IOException();
         }
     }
     public void bind(int sampler) {

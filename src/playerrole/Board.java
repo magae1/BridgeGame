@@ -84,25 +84,35 @@ public class Board {
         bridgeMap = new HashMap<>();
         mapPrinter = null;
     }
+    public Board() {
+        this.printer = new PrintStream(System.out);
+        cellList = new ArrayList<>();
+        bridgeMap = new HashMap<>();
+        mapPrinter = null;
+    }
     public void createMap() {
+        resetMap();
         MapBuilder mapBuilder = new MapBuilder("default");
         mapBuilder.streamMapData();
         buildBridges();
         mapPrinter = new MapPrinter(cellList, bridgeMap);
     }
     public void createMap(String mapName) {
+        resetMap();
         MapBuilder mapBuilder = new MapBuilder(mapName);
         mapBuilder.streamMapData();
         buildBridges();
         mapPrinter = new MapPrinter(cellList, bridgeMap);
     }
-    public void resetMap() {
+    private void resetMap() {
         Cell.setCountCells(0);
         Cell.setXPosition(0);
         Cell.setYPosition(0);
         mapPrinter = null;
         if (!cellList.isEmpty())
             cellList.clear();
+        if (!bridgeMap.isEmpty())
+            bridgeMap.clear();
     }
     public void printBoard() {
         mapPrinter.print();
