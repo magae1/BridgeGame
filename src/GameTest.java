@@ -3,10 +3,13 @@ import windows.Timer;
 import windows.Window;
 import graphic.Renderer;
 
+import javax.swing.*;
 import java.io.PrintStream;
+import java.util.Scanner;
 
-public class MainTest {
+public class GameTest {
     private static PrintStream printer = new PrintStream(System.out);
+    private static Scanner scanner = new Scanner(System.in);
     private static final String MAP_1 = "default";
     private static final String MAP_2 = "another";
     private static final int WINDOW_WIDTH = 960;
@@ -17,7 +20,7 @@ public class MainTest {
         win.createWindow("Bridge-Board Game");
 
         GameSystem gameSystem = new GameSystem(printer);
-        gameSystem.initGame(MAP_2);
+        gameSystem.initGame(new Scanner(System.in), MAP_2);
         gameSystem.start();
 
         Renderer renderer = new Renderer(WINDOW_WIDTH, WINDOW_HEIGHT);

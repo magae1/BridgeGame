@@ -1,33 +1,39 @@
 package playerrole;
 
-import com.sun.jdi.Value;
-
 import java.io.PrintStream;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Stream;
 
 public class GameSystem extends Thread {
+    public static final int MAX_NUM_OF_PLAYERS = 4;
+    public static final int MIN_NUM_OF_PLAYERS = 2;
     private Board board;
     private List<Player> players;
     private HashMap<Integer, Player> billBoard;
     private PrintStream printer;
     private Scanner scanner;
 
+    public GameSystem(Scanner scanner, PrintStream printer) {
+        this.printer = printer;
+        this.scanner = scanner;
+        board = new Board(printer);
+        players = null;
+        billBoard = null;
+    }
     public GameSystem(PrintStream printer) {
         this.printer = printer;
-        board = new Board(printer);
         scanner = new Scanner(System.in);
+        board = new Board(printer);
         players = null;
         billBoard = null;
     }
     public void initGame()  {
         board.createMap();
-        inputPlayerNumber();
+        inputPlayerNumber(scanner);
     }
-    public void initGame(String mapName)  {
+    public void initGame(Scanner scanner, String mapName)  {
         board.createMap(mapName);
-        inputPlayerNumber();
+        inputPlayerNumber(scanner);
     }
     public void run() {
         while (!isGameEnd()) {
@@ -43,7 +49,7 @@ public class GameSystem extends Thread {
                 .sorted(Collections.reverseOrder(Map.Entry.comparingByKey()))
                 .forEach(entry -> System.out.printf("Final Score : %d, Player : %s\n", entry.getKey(), entry.getValue()));
     }
-    private void inputPlayerNumber() {
+    private void inputPlayerNumber(Scanner scanner) {
         int numOfPlayers = 0;
         do {
             try {
@@ -52,7 +58,7 @@ public class GameSystem extends Thread {
             } catch (NumberFormatException e) {
                 printer.println(e.getMessage() + " = Wrong input!");
             }
-        } while((numOfPlayers < 2 || numOfPlayers > 4));
+        } while((numOfPlayers < MIN_NUM_OF_PLAYERS|| numOfPlayers > MAX_NUM_OF_PLAYERS));
         players = new CopyOnWriteArrayList<>();
         billBoard = new HashMap<>(numOfPlayers);
         setPlayers(numOfPlayers);

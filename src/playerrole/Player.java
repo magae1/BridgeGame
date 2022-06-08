@@ -2,9 +2,7 @@ package playerrole;
 
 import playerrole.cards.*;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Player {
     private static int totalNumberOfPlayingPlayers = 0;
@@ -16,7 +14,7 @@ public class Player {
     private boolean isPlaying;
     public Player(Board board) {
         piece = new Piece(board, this);
-        bridgeCards = new ArrayList<>(3);
+        bridgeCards = new ArrayList<>(1);
         equipmentCards = new ArrayList<>(3);
         isPlaying = true;
         indexOfPlayer = ++totalNumberOfPlayingPlayers;
