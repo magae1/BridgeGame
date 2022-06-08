@@ -19,10 +19,10 @@ public class Texture {
     private int width;
     private int height;
 
-    public Texture(String filename) throws IOException {
+    protected Texture(String filename) throws IOException {
         BufferedImage bi;
         try {
-            bi = ImageIO.read(new File("imgfolder/"+filename));
+            bi = ImageIO.read(new File("imgfolder/"+filename+".png"));
             width = bi.getWidth();
             height = bi.getHeight();
 
@@ -49,7 +49,7 @@ public class Texture {
             throw new IOException();
         }
     }
-    public void bind(int sampler) {
+    protected void bind(int sampler) {
         if (sampler >= 0 && sampler <= 31) {
             glActiveTexture(GL_TEXTURE0 + sampler);
             glBindTexture(GL_TEXTURE_2D, id);

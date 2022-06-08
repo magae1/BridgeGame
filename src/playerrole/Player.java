@@ -7,12 +7,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Player {
-    static int totalNumberOfPlayers = 0;
+    private static int totalNumberOfPlayingPlayers = 0;
     private final int indexOfPlayer;
     private ArrayList<BridgeCard> bridgeCards;
     private ArrayList<EquipmentCard> equipmentCards;
     private Piece piece;
-
     private int currentScore = 0;
     private boolean isPlaying;
     public Player(Board board) {
@@ -20,17 +19,13 @@ public class Player {
         bridgeCards = new ArrayList<>(3);
         equipmentCards = new ArrayList<>(3);
         isPlaying = true;
-        ++totalNumberOfPlayers;
-        indexOfPlayer = totalNumberOfPlayers;
+        indexOfPlayer = ++totalNumberOfPlayingPlayers;
     }
 
     protected void endBoardGame() {
         calcCurrentScoreByEquipmentCards();
-        piece = null;
-        bridgeCards = null;
-        equipmentCards = null;
         isPlaying = false;
-        --totalNumberOfPlayers;
+        --totalNumberOfPlayingPlayers;
     }
     protected void getNewBridgeCard() {
         bridgeCards.add(new BridgeCard());
@@ -65,8 +60,8 @@ public class Player {
     public int getIndexOfPlayer() {
         return indexOfPlayer;
     }
-    public static int getTotalNumberOfPlayers() {
-        return totalNumberOfPlayers;
+    public static int getTotalNumberOfPlayingPlayers() {
+        return totalNumberOfPlayingPlayers;
     }
 
 }

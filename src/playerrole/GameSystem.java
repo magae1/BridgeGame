@@ -1,10 +1,11 @@
 package playerrole;
 
+import com.sun.jdi.Value;
+
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Stream;
 
 public class GameSystem extends Thread {
     private Board board;
@@ -20,30 +21,49 @@ public class GameSystem extends Thread {
         players = null;
         billBoard = null;
     }
-    public void startGame() {
+    public void initGame()  {
         board.createMap();
-        int numOfPlayers;
+        inputPlayerNumber();
+    }
+    public void initGame(String mapName)  {
+        board.createMap(mapName);
+        inputPlayerNumber();
+    }
+    public void run() {
+        while (!isGameEnd()) {
+            for (Player player : players) {
+                playOneTurn(player);
+                if (!player.isPlaying())
+                    terminateAPlayer(player);
+            }
+        }
+        for (Player player : players)
+            terminateAPlayer(player);
+        billBoard.entrySet().stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByKey()))
+                .forEach(entry -> System.out.printf("Final Score : %d, Player : %s\n", entry.getKey(), entry.getValue()));
+    }
+    private void inputPlayerNumber() {
+        int numOfPlayers = 0;
         do {
-            printer.print("Input a number of players..>");
-            numOfPlayers = scanner.nextInt();
+            try {
+                printer.print("Input a number of players..>");
+                numOfPlayers = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                printer.println(e.getMessage() + " = Wrong input!");
+            }
         } while((numOfPlayers < 2 || numOfPlayers > 4));
-        players = new ArrayList<>(numOfPlayers);
+        players = new CopyOnWriteArrayList<>();
         billBoard = new HashMap<>(numOfPlayers);
         setPlayers(numOfPlayers);
-    }
-    public void does() {
-
-        while (!isGameEnd()) {
-            for (Player player : players)
-                playOneTurn(player);
-        }
     }
     protected void setPlayers(int numOfPlayers) {
         for (int i = 0; i < numOfPlayers; i++)
             players.add(new Player(board));
     }
     private void playOneTurn(Player player) {
-        printer.println(this);
+        board.printBoard();
+        printer.println(player);
         for (String input; ;) {
             printer.print("Stay[S] or Move[M]. if stay, can discard one bridge card..>");
             input = scanner.nextLine().toUpperCase();
@@ -82,7 +102,6 @@ public class GameSystem extends Thread {
                 }
             }
         }
-
         printer.printf("Dice roll[MIN:%d, MAX:%d]...", Dice.getMinNumOfEye(), Dice.getMaxNumOfEye());
         int currentEyes = Dice.roll();
         printer.printf("You got \"%d\".\n", currentEyes);
@@ -107,8 +126,7 @@ public class GameSystem extends Thread {
         printer.println("What you just input: " + input);
         return input;
     }
-
-    void terminateAPlayer(Player player) {
+    protected void terminateAPlayer(Player player) {
         int bonusScore = 0;
         switch (billBoard.size()) {
             case 0 -> bonusScore = 7;
@@ -119,7 +137,13 @@ public class GameSystem extends Thread {
         billBoard.put(totalScore, player);
         players.remove(player);
     }
-    boolean isGameEnd() {
-        return players.size() == 1;
+    private boolean isGameEnd() {
+        return Player.getTotalNumberOfPlayingPlayers() == 1;
+    }
+    public Board getBoard() {
+        return board;
+    }
+    public List<Player> getPlayers() {
+        return players;
     }
 }

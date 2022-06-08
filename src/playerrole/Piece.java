@@ -23,8 +23,10 @@ public class Piece {
         occurEventByCellType();
     }
     protected void crossBridge() {
+        currentCell.deletePiece(this);
         currentCell = board.getBridgeMap().get(currentCell);
         player.getNewBridgeCard();
+        currentCell.addPiece(this);
     }
 
     protected boolean isPieceOnBridgeCell() {
@@ -61,6 +63,12 @@ public class Piece {
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
+    }
+    public Cell getCurrentCell() {
+        return currentCell;
+    };
+    public Player getPlayer() {
+        return player;
     }
     public String toString() {
         return String.format("Your Piece is on a..%s", currentCell);

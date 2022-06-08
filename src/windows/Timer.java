@@ -5,6 +5,4 @@ public class Timer {
         return (double)System.nanoTime() / (double)1000000000L;
     }
 
-
-
 }

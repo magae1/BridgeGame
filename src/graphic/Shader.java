@@ -19,7 +19,7 @@ public class Shader {
     private int program;
     private int vs, fs;
 
-    public Shader(String filename) {
+    protected Shader(String filename) {
         program = glCreateProgram();
 
         vs = glCreateShader(GL_VERTEX_SHADER);
@@ -55,16 +55,16 @@ public class Shader {
             System.exit(1);
         }
     }
-    public void bind() {
+    protected void bind() {
         glUseProgram(program);
     }
-    public void setUniform(String name, int value) {
+    protected void setUniform(String name, int value) {
         int location = glGetUniformLocation(program, name);
         if (location != -1) {
             glUniform1i(location, value);
         }
     }
-    public void setUniform(String name, Matrix4f value) {
+    protected void setUniform(String name, Matrix4f value) {
         int location = glGetUniformLocation(program, name);
         FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
         value.get(buffer);
