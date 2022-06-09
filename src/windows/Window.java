@@ -32,7 +32,7 @@ public class Window extends Thread {
 
     public void createWindow(String windowTitle) throws IllegalStateException {
         if (!GLFW.glfwInit()) {
-            System.err.println("GLFW failed to initialize.");
+            System.err.println("ERROR : GLFW failed to initialize.");
             System.exit(1);
         }
 
@@ -41,7 +41,7 @@ public class Window extends Thread {
         window = GLFW.glfwCreateWindow(width, height, windowTitle, 0, 0);
 
         if (window == 0)
-            throw new IllegalStateException("Error!!: window doesn't created.");
+            throw new IllegalStateException("ERROR : window doesn't created.");
 
         GLFW.glfwMakeContextCurrent(window);
 
@@ -87,5 +87,11 @@ public class Window extends Thread {
     }
     public void terminateWindow() {
         GLFW.glfwTerminate();
+    }
+    public int getWidth() {
+        return width;
+    }
+    public int getHeight() {
+        return height;
     }
 }

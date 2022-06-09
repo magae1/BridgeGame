@@ -18,8 +18,11 @@ public class Piece {
         return board.movementCheck(currentCell, movements);
     }
     protected void move(String movements) {
-        for (int i = 0; i < movements.length(); i++)
+        for (int i = 0; i < movements.length(); i++) {
             moveOneStep(movements.charAt(i));
+            if (currentCell.getCELL_TYPE() == CellTypes.END)
+                break;
+        }
         occurEventByCellType();
     }
     protected void crossBridge() {

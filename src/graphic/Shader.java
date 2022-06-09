@@ -5,6 +5,7 @@
 package graphic;
 
 import org.joml.Matrix4f;
+import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
 import java.io.BufferedReader;
@@ -19,7 +20,7 @@ public class Shader {
     private int program;
     private int vs, fs;
 
-    protected Shader(String filename) {
+    public Shader(String filename) {
         program = glCreateProgram();
 
         vs = glCreateShader(GL_VERTEX_SHADER);
@@ -55,17 +56,21 @@ public class Shader {
             System.exit(1);
         }
     }
-    protected void bind() {
+    public void bind() {
         glUseProgram(program);
     }
-    protected void setUniform(String name, int value) {
-        int location = glGetUniformLocation(program, name);
+    public void setUniform(String uniformName, int value) {
+        int location = glGetUniformLocation(program, uniformName);
         if (location != -1) {
             glUniform1i(location, value);
         }
     }
-    protected void setUniform(String name, Matrix4f value) {
-        int location = glGetUniformLocation(program, name);
+    public void setUniform(String uniformName, Vector4f value) {
+        int location = glGetUniformLocation(program, uniformName);
+        if (location != -1) glUniform4f(location, value.x, value.y, value.z, value.w);
+    }
+    public void setUniform(String uniformName, Matrix4f value) {
+        int location = glGetUniformLocation(program, uniformName);
         FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
         value.get(buffer);
         if (location != -1) {

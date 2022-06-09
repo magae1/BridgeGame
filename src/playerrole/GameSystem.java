@@ -9,7 +9,7 @@ public class GameSystem extends Thread {
     public static final int MIN_NUM_OF_PLAYERS = 2;
     private Board board;
     private List<Player> players;
-    private HashMap<Integer, Player> billBoard;
+    private HashMap<Player, Integer> billBoard;
     private PrintStream printer;
     private Scanner scanner;
 
@@ -43,11 +43,13 @@ public class GameSystem extends Thread {
                     terminateAPlayer(player);
             }
         }
-        for (Player player : players)
-            terminateAPlayer(player);
+        for (Player player : players) {
+            if (!billBoard.containsKey(player))
+                terminateAPlayer(player);
+        }
         billBoard.entrySet().stream()
-                .sorted(Collections.reverseOrder(Map.Entry.comparingByKey()))
-                .forEach(entry -> System.out.printf("Final Score : %d, Player : %s\n", entry.getKey(), entry.getValue()));
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .forEach(entry -> System.out.printf("Final Score : %d, Player : %s\n", entry.getValue(), entry.getKey()));
     }
     private void inputPlayerNumber(Scanner scanner) {
         int numOfPlayers = 0;
@@ -59,7 +61,7 @@ public class GameSystem extends Thread {
                 printer.println(e.getMessage() + " = Wrong input!");
             }
         } while((numOfPlayers < MIN_NUM_OF_PLAYERS|| numOfPlayers > MAX_NUM_OF_PLAYERS));
-        players = new CopyOnWriteArrayList<>();
+        players = new ArrayList<>();
         billBoard = new HashMap<>(numOfPlayers);
         setPlayers(numOfPlayers);
     }
@@ -68,7 +70,7 @@ public class GameSystem extends Thread {
             players.add(new Player(board));
     }
     private void playOneTurn(Player player) {
-        board.printBoard();
+        board.printBoard(players);
         printer.println(player);
         for (String input; ;) {
             printer.print("Stay[S] or Move[M]. if stay, can discard one bridge card..>");
@@ -84,7 +86,7 @@ public class GameSystem extends Thread {
                 break;
             }
             printer.println("Wrong input : " + input);
-        }
+        }//for..END
         printer.println("End your turn.");
     }
     private void stayTurn(Player player) {
@@ -133,18 +135,21 @@ public class GameSystem extends Thread {
         return input;
     }
     protected void terminateAPlayer(Player player) {
+        if (player.isPlaying())
+            player.endBoardGame();
         int bonusScore = 0;
-        switch (billBoard.size()) {
-            case 0 -> bonusScore = 7;
-            case 1 -> bonusScore = 3;
-            case 2 -> bonusScore = 1;
+        if (Player.getTotalNumberOfPlayingPlayers() >= MIN_NUM_OF_PLAYERS-1) {
+            switch (billBoard.size()) {
+                case 0 -> bonusScore = 7;
+                case 1 -> bonusScore = 3;
+                case 2 -> bonusScore = 1;
+            }
         }
         int totalScore = player.getCurrentScore() + bonusScore;
-        billBoard.put(totalScore, player);
-        players.remove(player);
+        billBoard.put(player, totalScore);
     }
     private boolean isGameEnd() {
-        return Player.getTotalNumberOfPlayingPlayers() == 1;
+        return Player.getTotalNumberOfPlayingPlayers() <= 1;
     }
     public Board getBoard() {
         return board;

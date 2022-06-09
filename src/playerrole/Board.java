@@ -114,8 +114,8 @@ public class Board {
         if (!bridgeMap.isEmpty())
             bridgeMap.clear();
     }
-    public void printBoard() {
-        mapPrinter.print();
+    public void printBoard(List<Player> players) {
+        mapPrinter.print(players);
     }
     protected boolean movementCheck(Cell cell, String movements) {
         try {
@@ -230,24 +230,35 @@ class MapPrinter {
             }
         }
     }
-    protected void print() {
+    protected void print(List<Player> players) {
+        boolean isPrintPlayer = false;
         for (int i = lowestYPos-1; i <= highestYPos; i++) {
             for (int j = lowestXPos-1; j <= highestXPos; j++) {
-                if (i == lowestYPos - 1) {
-                    if (j != lowestXPos - 1)
-                        System.out.printf("%2d", j);
-                    else
-                        System.out.print("  ");
+                for (Player player : players) {
+                    if (player.getPiece().getCurrentCell().getPOSITION().getXpos() == j
+                            && player.getPiece().getCurrentCell().getPOSITION().getYpos() == i) {
+                        System.out.printf("%2d", player.getIndexOfPlayer());
+                        isPrintPlayer = true;
+                        break;
+                    }
+                }//for players..END
+                if (!isPrintPlayer) {
+                    if (i == lowestYPos - 1) {
+                        if (j != lowestXPos - 1)
+                            System.out.printf("%2d", j);
+                        else
+                            System.out.print("  ");
+                    } else {
+                        if (j == lowestXPos - 1)
+                            System.out.printf("%2d", i);
+                        else
+                            System.out.printf("%2c", printing[i - lowestYPos][j - lowestXPos]);
+                    }
                 }
-                else {
-                    if (j == lowestXPos - 1)
-                        System.out.printf("%2d", i);
-                    else
-                        System.out.printf("%2c", printing[i - lowestYPos][j - lowestXPos]);
-                }
-            }
+                isPrintPlayer = false;
+            }//for j..END
             System.out.println();
-        }
+        }//for i..END
     }
 }
 

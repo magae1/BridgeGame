@@ -12,7 +12,7 @@ import java.nio.IntBuffer;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
-abstract class Model {
+public class Model {
     private int draw_count;
     private int v_id, t_id, i_id;
 

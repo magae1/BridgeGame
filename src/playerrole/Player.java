@@ -21,7 +21,6 @@ public class Player {
     }
 
     protected void endBoardGame() {
-        calcCurrentScoreByEquipmentCards();
         isPlaying = false;
         --totalNumberOfPlayingPlayers;
     }
@@ -30,11 +29,7 @@ public class Player {
     }
     protected void getNewEquipmentCard(EquipmentCardIndex e) {
         equipmentCards.add(new EquipmentCard(e.getName(), e.getScore()));
-    }
-    private void calcCurrentScoreByEquipmentCards() {
-        currentScore = 0;
-        for (EquipmentCard e : equipmentCards)
-            currentScore += e.getScore();
+        currentScore += e.getScore();
     }
     protected void deleteBridgeCard() {
         if (!bridgeCards.isEmpty())
