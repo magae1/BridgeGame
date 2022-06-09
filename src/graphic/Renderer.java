@@ -125,7 +125,7 @@ public class Renderer {
                 int i = 0;
                 for (Piece piece : pieces) {
                     shader.bind();
-                    piece_textures.get(piece.getPlayer().getIndexOfPlayer()-1).bind(0);
+                    piece_textures.get(piece.getPlayer().indexOfPlayer-1).bind(0);
 
                     Matrix4f target = new Matrix4f();
                     camera.getProjection().mul(world,target);

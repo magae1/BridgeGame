@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Player {
     private static int totalNumberOfPlayingPlayers = 0;
-    private final int indexOfPlayer;
+    public final int indexOfPlayer;
     private ArrayList<BridgeCard> bridgeCards;
     private ArrayList<EquipmentCard> equipmentCards;
     private Piece piece;
@@ -49,9 +49,6 @@ public class Player {
     }
     public int getCurrentScore() {
         return currentScore;
-    }
-    public int getIndexOfPlayer() {
-        return indexOfPlayer;
     }
     public static int getTotalNumberOfPlayingPlayers() {
         return totalNumberOfPlayingPlayers;

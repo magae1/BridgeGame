@@ -237,7 +237,7 @@ class MapPrinter {
                 for (Player player : players) {
                     if (player.getPiece().getCurrentCell().getPOSITION().getXpos() == j
                             && player.getPiece().getCurrentCell().getPOSITION().getYpos() == i) {
-                        System.out.printf("%2d", player.getIndexOfPlayer());
+                        System.out.printf("%2d", player.indexOfPlayer);
                         isPrintPlayer = true;
                         break;
                     }
