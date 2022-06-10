@@ -48,7 +48,7 @@ public class GameSystem extends Thread {
         }
         billBoard.entrySet().stream()
                 .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
-                .forEach(entry -> System.out.printf("Final Score : %d, Player : %s\n", entry.getValue(), entry.getKey()));
+                .forEach(entry -> printer.printf("Final Score : %d, Player : %s\n", entry.getValue(), entry.getKey()));
     }
     private void inputPlayerNumber(Scanner scanner) {
         int numOfPlayers = 0;
