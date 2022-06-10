@@ -157,7 +157,7 @@ public class Board {
 
         for (Cell startCell : tempStartCellsList) {
             for (Cell endCell : tempEndCellsList) {
-                if (isCellOnTheSameYaxis(endCell, startCell.getPOSITION().getXpos(), startCell.getPOSITION().getYpos())) {
+                if (isCellOnTheSameYaxis(endCell, startCell.getPOSITION().XPOS, startCell.getPOSITION().YPOS)) {
                     printer.printf("StartCell:%s, EndCell:%s\n", startCell, endCell);
                     bridgeMap.put(startCell, endCell);
                 }
@@ -165,7 +165,7 @@ public class Board {
         }
     }
     private boolean isCellOnTheSameYaxis(Cell cell, int x, int y) {
-        return (cell.getPOSITION().getXpos() > x && cell.getPOSITION().getYpos() == y);
+        return (cell.getPOSITION().XPOS > x && cell.getPOSITION().YPOS == y);
     }
     private CellTypes getCellTypeByCharacter(char c) {
         for (CellTypes e : CellTypes.values()) {
@@ -207,10 +207,10 @@ class MapPrinter {
     }
     private void calcHighestLowestXY() {
         for (Cell cell : cellList) {
-            highestXPos = Math.max(highestXPos, cell.getPOSITION().getXpos());
-            lowestXPos = Math.min(lowestXPos, cell.getPOSITION().getXpos());
-            highestYPos = Math.max(highestYPos, cell.getPOSITION().getYpos());
-            lowestYPos = Math.min(lowestYPos, cell.getPOSITION().getYpos());
+            highestXPos = Math.max(highestXPos, cell.getPOSITION().XPOS);
+            lowestXPos = Math.min(lowestXPos, cell.getPOSITION().XPOS);
+            highestYPos = Math.max(highestYPos, cell.getPOSITION().YPOS);
+            lowestYPos = Math.min(lowestYPos, cell.getPOSITION().YPOS);
         }
     }
     private void setPrinting() {
@@ -219,14 +219,14 @@ class MapPrinter {
                 printing[i-lowestYPos][j-lowestXPos] = ' ';
         }
         for (Cell cell : cellList) {
-            printing[cell.getPOSITION().getYpos() - lowestYPos][cell.getPOSITION().getXpos() - lowestXPos]
+            printing[cell.getPOSITION().YPOS - lowestYPos][cell.getPOSITION().XPOS - lowestXPos]
                     = cell.getCELL_TYPE().getaChar();
         }
         for (java.util.Map.Entry<Cell, Cell> bridge : bridgeMap.entrySet()) {
             Cell startCell = bridge.getKey();
             Cell endCell = bridge.getValue();
-            for (int i = startCell.getPOSITION().getXpos()+1; i < endCell.getPOSITION().getXpos(); i++) {
-                printing[startCell.getPOSITION().getYpos()-lowestYPos][i-lowestXPos] = '=';
+            for (int i = startCell.getPOSITION().XPOS+1; i < endCell.getPOSITION().XPOS; i++) {
+                printing[startCell.getPOSITION().YPOS-lowestYPos][i-lowestXPos] = '=';
             }
         }
     }
@@ -235,8 +235,8 @@ class MapPrinter {
         for (int i = lowestYPos-1; i <= highestYPos; i++) {
             for (int j = lowestXPos-1; j <= highestXPos; j++) {
                 for (Player player : players) {
-                    if (player.getPiece().getCurrentCell().getPOSITION().getXpos() == j
-                            && player.getPiece().getCurrentCell().getPOSITION().getYpos() == i) {
+                    if (player.getPiece().getCurrentCell().getPOSITION().XPOS == j
+                            && player.getPiece().getCurrentCell().getPOSITION().YPOS == i) {
                         System.out.printf("%2d", player.indexOfPlayer);
                         isPrintPlayer = true;
                         break;

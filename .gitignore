@@ -2,3 +2,4 @@
 .idea
 *.iml
 /lwjgl_libs/
+/src/META-INF/

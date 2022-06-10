@@ -2,7 +2,6 @@ package playerrole;
 
 import java.io.PrintStream;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameSystem extends Thread {
     public static final int MAX_NUM_OF_PLAYERS = 4;
@@ -110,7 +109,7 @@ public class GameSystem extends Thread {
                 }
             }
         }
-        printer.printf("Dice roll[MIN:%d, MAX:%d]...", Dice.getMinNumOfEye(), Dice.getMaxNumOfEye());
+        printer.printf("Dice roll[MIN:%d, MAX:%d]...", Dice.MIN_NUM_OF_EYE, Dice.MAX_NUM_OF_EYE);
         int currentEyes = Dice.roll();
         printer.printf("You got \"%d\".\n", currentEyes);
 

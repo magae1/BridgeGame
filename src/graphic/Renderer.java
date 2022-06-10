@@ -72,8 +72,8 @@ public class Renderer {
         float xPos = 0;
         float yPos = 0;
         for (Player player : players) {
-            xPos += player.getPiece().getCurrentCell().getPOSITION().getXpos();
-            yPos += player.getPiece().getCurrentCell().getPOSITION().getYpos();
+            xPos += player.getPiece().getCurrentCell().getPOSITION().XPOS;
+            yPos += player.getPiece().getCurrentCell().getPOSITION().YPOS;
         }
         xPos /= players.size();
         yPos /= players.size();
@@ -84,7 +84,7 @@ public class Renderer {
             shader.bind();
             if (cells_textures.containsKey(cell.getCELL_TYPE()))
                 cells_textures.get(cell.getCELL_TYPE()).bind(0);
-            Matrix4f cellPosition = new Matrix4f().translate(new Vector3f(cell.getPOSITION().getXpos()*2, -cell.getPOSITION().getYpos()*2, 0));
+            Matrix4f cellPosition = new Matrix4f().translate(new Vector3f(cell.getPOSITION().XPOS*2, -cell.getPOSITION().YPOS*2, 0));
             Matrix4f target = new Matrix4f();
 
             camera.getProjection().mul(world, target);
@@ -100,11 +100,11 @@ public class Renderer {
         for (java.util.Map.Entry<Cell, Cell> bridge : bridgeMap.entrySet()) {
             Cell startCell = bridge.getKey();
             Cell endCell = bridge.getValue();
-            for (int i = startCell.getPOSITION().getXpos()+1; i < endCell.getPOSITION().getXpos(); i++) {
+            for (int i = startCell.getPOSITION().XPOS+1; i < endCell.getPOSITION().XPOS; i++) {
                 shader.bind();
                 bridge_textures.bind(0);
 
-                Matrix4f bridgePosition = new Matrix4f().translate(new Vector3f(i*2, -startCell.getPOSITION().getYpos()*2, 0));
+                Matrix4f bridgePosition = new Matrix4f().translate(new Vector3f(i*2, -startCell.getPOSITION().YPOS*2, 0));
                 Matrix4f target = new Matrix4f();
 
                 camera.getProjection().mul(world, target);
@@ -142,21 +142,21 @@ public class Renderer {
     private List<Matrix4f> getPositionsByPiecesNumber(Cell cell, int numOfPieces) {
         List<Matrix4f> matrix4fSet = new ArrayList<>(numOfPieces);
         switch(numOfPieces) {
-            case 1 -> matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().getXpos()*2, -cell.getPOSITION().getYpos()*2, 0)));
+            case 1 -> matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().XPOS*2, -cell.getPOSITION().YPOS*2, 0)));
             case 2 -> {
-                matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().getXpos()*2 - (float)1/3, -cell.getPOSITION().getYpos()*2, 0)));
-                matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().getXpos()*2 + (float)1/3, -cell.getPOSITION().getYpos()*2, 0)));
+                matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().XPOS*2 - (float)1/3, -cell.getPOSITION().YPOS*2, 0)));
+                matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().XPOS*2 + (float)1/3, -cell.getPOSITION().YPOS*2, 0)));
             }
             case 3 -> {
-                matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().getXpos()*2 - (float)1/2, -(cell.getPOSITION().getYpos()*2 + (float)1/2), 0)));
-                matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().getXpos()*2 + (float)1/2, -(cell.getPOSITION().getYpos()*2 + (float)1/2), 0)));
-                matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().getXpos()*2, -(cell.getPOSITION().getYpos()*2 - (float)1/2), 0)));
+                matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().XPOS*2 - (float)1/2, -(cell.getPOSITION().YPOS*2 + (float)1/2), 0)));
+                matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().XPOS*2 + (float)1/2, -(cell.getPOSITION().YPOS*2 + (float)1/2), 0)));
+                matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().XPOS*2, -(cell.getPOSITION().YPOS*2 - (float)1/2), 0)));
             }
             case 4 -> {
-                matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().getXpos()*2 - (float)2/3, -(cell.getPOSITION().getYpos()*2 + (float)2/3), 0)));
-                matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().getXpos()*2 + (float)2/3, -(cell.getPOSITION().getYpos()*2 + (float)2/3), 0)));
-                matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().getXpos()*2 - (float)2/3, -(cell.getPOSITION().getYpos()*2 - (float)2/3), 0)));
-                matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().getXpos()*2 + (float)2/3, -(cell.getPOSITION().getYpos()*2 - (float)2/3), 0)));
+                matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().XPOS*2 - (float)2/3, -(cell.getPOSITION().YPOS*2 + (float)2/3), 0)));
+                matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().XPOS*2 + (float)2/3, -(cell.getPOSITION().YPOS*2 + (float)2/3), 0)));
+                matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().XPOS*2 - (float)2/3, -(cell.getPOSITION().YPOS*2 - (float)2/3), 0)));
+                matrix4fSet.add(new Matrix4f().translate(new Vector3f(cell.getPOSITION().XPOS*2 + (float)2/3, -(cell.getPOSITION().YPOS*2 - (float)2/3), 0)));
             }
         }
         return matrix4fSet;
