@@ -1,11 +1,8 @@
-import graphic.Assets;
-import graphic.gui.Gui;
 import playerrole.GameSystem;
 import windows.Timer;
 import windows.Window;
 import graphic.Renderer;
 
-import javax.swing.*;
 import java.io.PrintStream;
 import java.util.Scanner;
 
@@ -29,8 +26,6 @@ public class GameTest {
         renderer.setCellList(gameSystem.getBoard().getCellList());
         renderer.setBridgeMap(gameSystem.getBoard().getBridgeMap());
         renderer.setPlayers(gameSystem.getPlayers());
-        Assets.initAsset();
-        Gui gui = new Gui(win);
 
         final double frame_cap = 1.0/60.0;
         double time = Timer.getTime();
@@ -50,11 +45,9 @@ public class GameTest {
                 unprocessed -= frame_cap;
                 can_render = true;
                 renderer.camUpdate();
-                gui.resizeCamera(win);
                 win.update();
             }
             if (can_render) {
-                gui.update(win.getKeyMouseHandler());
                 win.clear();
                 renderer.render();
                 win.swapBuffers();
