@@ -19,18 +19,11 @@ public class GameSystem extends Thread {
         players = null;
         billBoard = null;
     }
-    public GameSystem(PrintStream printer) {
-        this.printer = printer;
-        scanner = new Scanner(System.in);
-        board = new Board(printer);
-        players = null;
-        billBoard = null;
-    }
     public void initGame()  {
         board.createMap();
         inputPlayerNumber(scanner);
     }
-    public void initGame(Scanner scanner, String mapName)  {
+    public void initGame(String mapName)  {
         board.createMap(mapName);
         inputPlayerNumber(scanner);
     }

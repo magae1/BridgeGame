@@ -18,8 +18,8 @@ public class GameTest {
         Window win = new Window(WINDOW_WIDTH, WINDOW_HEIGHT);
         win.createWindow("Bridge-Board Game");
 
-        GameSystem gameSystem = new GameSystem(printer);
-        gameSystem.initGame(new Scanner(System.in), MAP_2);
+        GameSystem gameSystem = new GameSystem(scanner, printer);
+        gameSystem.initGame();
         gameSystem.start();
 
         Renderer renderer = new Renderer(WINDOW_WIDTH, WINDOW_HEIGHT);
